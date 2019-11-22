@@ -12,16 +12,21 @@ endif
 syn keyword orogenTodo TODO FIXME XXX contained
 syn match orogenComment "#.*$" contains=orogenTodo
 
-" Strings
+" Strings and numbers
 syn region orogenString start='"' skip='\\"' end='"'
 syn region orogenString start="'" skip="\\'" end="'"
+" Somewhat borrowed from the default lua syntax file
+syn match orogenFreq "\<\d\+\>"
+syn match orogenFreq "\<\d\+\.\d*\>"
+syn match orogenFreq "\.\d\+\>"
 
 " Keywords used outside of a task context
 syn keyword orogenToplevelKeywords name version using_library import_types_from nextgroup=orogenString
 
 " Instructions used inside task definitions
-syn keyword orogenTaskDefinitionKeywords property input_port output_port periodic needs_configuration contained
-syn keyword orogenTaskDefinitionKeywords port_driven nextgroup=orogenString contained
+syn keyword orogenTaskDefinitionKeywords property input_port output_port needs_configuration contained
+syn keyword orogenTaskDefinitionKeywords port_driven nextgroup=orogenString skipwhite contained
+syn keyword orogenTaskDefinitionKeywords periodic  nextgroup=orogenFreq skipwhite contained
 
 " Regions for task contexts
 syn region orogenTaskContent transparent matchgroup=orogenStatement start="\<do\>" end="\<end\>" contains=ALLBUT,orogenToplevelKeywords
@@ -32,6 +37,7 @@ let b:current_syntax = "orogen"
 hi def link orogenTodo Todo
 hi def link orogenComment Comment
 hi def link orogenString String
+hi def link orogenFreq Number
 hi def link orogenToplevelKeywords Function
 hi def link orogenStatement Conditional
 hi def link orogenTaskDefinitionKeywords Function
